@@ -119,13 +119,7 @@ buttons.forEach((btn) => {
 
             performArithmeticOperation(btn);
 
-            if (btn.textContent === "Clear") {
-                contents = "";
-                calcObject["result"] = false;
-                calcObject["leftOperand"] = false;
-                calcObject["rightOperand"] = false;
-                calcObject["operator"] = false;
-            }
+            clearOutput(btn);
 
             display.value = contents;
 
@@ -167,5 +161,15 @@ function performArithmeticOperation(btn) {
                 calcObject["result"] = false;
             }
         }
+    }
+}
+
+function clearOutput(btn) {
+    if (btn.textContent === "Clear") {
+        contents = "";
+        calcObject["result"] = false;
+        calcObject["leftOperand"] = false;
+        calcObject["rightOperand"] = false;
+        calcObject["operator"] = false;
     }
 }
