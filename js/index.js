@@ -1,26 +1,5 @@
 /** functions for calculator project */
 
-// // prompt user for x and y values
-// function getUserInput() {
-//     let x = parseFloat(prompt("Enter first number: "));
-
-//     // check if x is a number
-//     while (typeof (x) !== 'number' || isNaN(x)) {
-//         x = parseFloat(prompt("Enter a valid number: "));
-//     }
-
-//     let y = parseFloat(prompt("Enter second number: "));
-//     // check if y is a number
-//     while (typeof (y) !== 'number' || isNaN(y)) {
-//         y = parseFloat(prompt("Enter a valid number: "));
-//     }
-
-//     return {
-//         x,
-//         y,
-//     };
-// }
-
 // add function
 function add(leftOperand, rightOperand) {
     return Number((leftOperand + rightOperand).toFixed(15));
@@ -92,13 +71,19 @@ buttons.forEach((btn) => {
         btn.addEventListener("click", () => {
             if (calcObject["operator"] &&
                 typeof (calcObject["leftOperand"]) === "number") {
-                contents += Number(btn.textContent);
-                calcObject["rightOperand"] =
-                    Number(contents.split(" ").at(-1));
-
+                contents += btn.textContent;
+                calcObject["rightOperand"] = Number(contents.split(" ").at(-1));
                 let tempArray = contents.split(" ");
-                tempArray[2] = Number(contents.split(" ")[2]);
-                contents = tempArray.join(" ");
+                tempArray[2] = contents.split(" ")[2];
+
+                if (Number(tempArray[2]) === 0 && tempArray[2].length >= 0 && !tempArray[2].includes(".")) {
+                    tempArray[2] = "0";
+                    contents = tempArray.join(" ");
+                    display.value = contents;
+                } else if (Number(tempArray[2]) !== 0 || tempArray[2].includes(".")) {
+                    contents = tempArray.join(" ");
+                    display.value = contents;
+                }
 
                 // check for division by zero
                 if (calcObject["operator"] === "/" &&
@@ -111,9 +96,14 @@ buttons.forEach((btn) => {
                     display.value = contents;
                 }
             } else {
-
-                contents += Number(btn.textContent);
-                display.value = Number(contents);
+                contents += btn.textContent;
+                if (Number(contents) === 0 && contents.length >= 0 &&
+                    !contents.includes(".")) {
+                    contents = "0";
+                    display.value = "0";
+                } else if (Number(contents) !== 0 || contents.includes(".")) {
+                    display.value = contents;
+                }
             }
         });
     }
@@ -122,33 +112,37 @@ buttons.forEach((btn) => {
         btn.addEventListener("click", () => {
             /** operations " * - + / "  */
             performArithmeticOperation(btn);
-
             clearOutput(btn);
-
             display.value = contents;
-
-            displayResult(btn)
-
+            displayResult(btn);
         });
     }
 });
 
 function performArithmeticOperation(btn) {
-    if (calcObject["leftOperand"] === false) {
-        calcObject["leftOperand"] = Number(contents);
+    if ((calcObject["leftOperand"] === false ||
+        contents.split(" ").at(-1).includes(".")) &&
+        !calcObject["operator"]) {
+
+        if (!isNaN(Number(contents))) {
+            calcObject["leftOperand"] = Number(contents);
+        }
     }
 
     if (btn.textContent == "x" ||
         btn.textContent == "+" ||
         btn.textContent == "-" ||
-        btn.textContent == "/") {
+        btn.textContent == "/"
+    ) {
         if (typeof (calcObject["leftOperand"]) === "number") {
-            if (!calcObject["rightOperand"] && !calcObject["operator"]) {
+            if (!calcObject["rightOperand"] &&
+                !calcObject["operator"]) {
                 contents = Number(contents);
                 contents += ` ${btn.textContent} `;
                 calcObject["operator"] = btn.textContent;
                 calcObject["rightOperand"] = true;
-            } else if (typeof (calcObject["rightOperand"]) === "number") {
+            }
+            else if (typeof (calcObject["rightOperand"]) === "number") {
                 calcObject["leftOperand"] = calcObject["result"];
                 contents = calcObject["result"];
                 contents += ` ${btn.textContent} `;
@@ -156,6 +150,23 @@ function performArithmeticOperation(btn) {
                 calcObject["rightOperand"] = true;
                 calcObject["result"] = false;
             }
+        }
+    }
+    else if (btn.textContent == "."
+        && (calcObject["rightOperand"] ||
+            typeof (calcObject["leftOperand"]) === "number")) {
+
+        if (contents.split(" ").at(-1) !== "." &&
+            typeof (Number(contents.split(" ").at(-1))) === "number" &&
+            !contents.split(" ").at(-1).includes(".")) {
+            contents += `${btn.textContent}`;
+        }
+    }
+    else if (btn.textContent == "." && typeof (calcObject["leftOperand"]) === "boolean") {
+        if (contents.split(" ").at(-1) !== "." &&
+            typeof (Number(contents.split(" ").at(-1))) === "number" &&
+            !contents.split(" ").at(-1).includes(".")) {
+            contents += `${btn.textContent}`;
         }
     }
 }
