@@ -24,12 +24,13 @@ html {
     box-sizing: border-box;
     display: flex;
     overflow-wrap: break-word;
-    background: rgb(255, 255, 255);
+    background: rgb(12, 12, 12);
     border: 1px solid rgb(165, 35, 154);
     height: 70px;
     width: 400px;
     font-size: 24px;
-    color: black;
+    color: #3882F6;
+    font-weight: bold;
 }
 
 .button-container {
