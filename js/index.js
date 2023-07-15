@@ -90,11 +90,8 @@ buttons.forEach((btn) => {
     if (!isNaN(btn.textContent)) {
         btn.addEventListener("click", () => {
             if (calcObject["operator"] && typeof (calcObject["leftOperand"]) === "number") {
-
                 contents += Number(btn.textContent);
-
                 calcObject["rightOperand"] = Number(contents.split(" ").at(-1));
-
                 let tempArray = contents.split(" ");
                 tempArray[2] = Number(contents.split(" ")[2]);
                 contents = tempArray.join(" ");
@@ -128,7 +125,7 @@ buttons.forEach((btn) => {
                 calcObject["result"] = false;
                 calcObject["leftOperand"] = false;
                 calcObject["rightOperand"] = false;
-                calcObject["operator"] = "";
+                calcObject["operator"] = false;
             }
 
             display.value = contents;
