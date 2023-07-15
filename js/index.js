@@ -90,15 +90,19 @@ buttons.forEach((btn) => {
     // get numeric buttons
     if (!isNaN(btn.textContent)) {
         btn.addEventListener("click", () => {
-            if (calcObject["operator"] && typeof (calcObject["leftOperand"]) === "number") {
+            if (calcObject["operator"] &&
+                typeof (calcObject["leftOperand"]) === "number") {
                 contents += Number(btn.textContent);
-                calcObject["rightOperand"] = Number(contents.split(" ").at(-1));
+                calcObject["rightOperand"] =
+                    Number(contents.split(" ").at(-1));
+
                 let tempArray = contents.split(" ");
                 tempArray[2] = Number(contents.split(" ")[2]);
                 contents = tempArray.join(" ");
 
                 // check for division by zero
-                if (calcObject["operator"] === "/" && calcObject["rightOperand"] === 0) {
+                if (calcObject["operator"] === "/" &&
+                    calcObject["rightOperand"] === 0) {
                     calcObject["rightOperand"] = true;
                 } else {
                     calcObject["result"] = operate(calcObject["leftOperand"],
@@ -108,7 +112,7 @@ buttons.forEach((btn) => {
                 }
             } else {
 
-                contents += Number(btn.textContent);//`${btn.textContent}`;
+                contents += Number(btn.textContent);
                 display.value = Number(contents);
             }
         });
@@ -116,23 +120,15 @@ buttons.forEach((btn) => {
     if (isNaN(btn.textContent)) {
         // operator buttons
         btn.addEventListener("click", () => {
-
+            /** operations " * - + / "  */
             performArithmeticOperation(btn);
 
             clearOutput(btn);
 
             display.value = contents;
 
-            if (btn.textContent === "=") {
-                let lastNumber = Number(contents.split(" ").at(-1))
-                if (lastNumber !== btn.textContent &&
-                    typeof (calcObject["rightOperand"]) == "number" &&
-                    calcObject["result"] !== "" &&
-                    calcObject["result"] !== false) {
-                    display.value = calcObject["result"];
-                    contents = display.value;
-                }
-            }
+            displayResult(btn)
+
         });
     }
 });
@@ -171,5 +167,18 @@ function clearOutput(btn) {
         calcObject["leftOperand"] = false;
         calcObject["rightOperand"] = false;
         calcObject["operator"] = false;
+    }
+}
+
+function displayResult(btn) {
+    if (btn.textContent === "=") {
+        let lastNumber = Number(contents.split(" ").at(-1))
+        if (lastNumber !== btn.textContent &&
+            typeof (calcObject["rightOperand"]) == "number" &&
+            calcObject["result"] !== "" &&
+            calcObject["result"] !== false) {
+            display.value = calcObject["result"];
+            contents = display.value;
+        }
     }
 }
