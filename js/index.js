@@ -96,6 +96,7 @@ buttons.forEach((btn) => {
                 let tempArray = contents.split(" ");
                 tempArray[2] = Number(contents.split(" ")[2]);
                 contents = tempArray.join(" ");
+
                 // check for division by zero
                 if (calcObject["operator"] === "/" && calcObject["rightOperand"] === 0) {
                     calcObject["rightOperand"] = true;
@@ -115,11 +116,8 @@ buttons.forEach((btn) => {
     if (isNaN(btn.textContent)) {
         // operator buttons
         btn.addEventListener("click", () => {
-            if (calcObject["leftOperand"] === false) {
-                calcObject["leftOperand"] = Number(contents);
-            }
 
-            processMe(btn);
+            performArithmeticOperation(btn);
 
             if (btn.textContent === "Clear") {
                 contents = "";
@@ -145,7 +143,11 @@ buttons.forEach((btn) => {
     }
 });
 
-function processMe(btn) {
+function performArithmeticOperation(btn) {
+    if (calcObject["leftOperand"] === false) {
+        calcObject["leftOperand"] = Number(contents);
+    }
+
     if (btn.textContent == "x" ||
         btn.textContent == "+" ||
         btn.textContent == "-" ||
@@ -158,10 +160,11 @@ function processMe(btn) {
                 calcObject["rightOperand"] = true;
             } else if (typeof (calcObject["rightOperand"]) === "number") {
                 calcObject["leftOperand"] = calcObject["result"];
+                contents = calcObject["result"];
                 contents += ` ${btn.textContent} `;
                 calcObject["operator"] = btn.textContent;
                 calcObject["rightOperand"] = true;
-                calcObject["result"] = "";
+                calcObject["result"] = false;
             }
         }
     }
