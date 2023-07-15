@@ -53,6 +53,30 @@ button {
     width: 70px;
 }
 
+.clear {
+    background: rgb(56, 4, 4);
+}
+
+.multiply {
+    background: #044204;
+}
+
+.subtract {
+    background: rgb(58, 50, 4);
+}
+
+.add {
+    background: rgb(5, 5, 51);
+}
+
+.divide {
+    background: rgb(22, 2, 41);
+}
+
+.equals {
+    background: rgb(13, 14, 12);
+}
+
 .first-row,
 .second-row,
 .third-row,
