@@ -49,7 +49,7 @@ function divide(leftOperand, rightOperand) {
                 parseFloat(prompt("Enter a denominator not equal to 0: "));
         }
     }
-    return Number((leftOperand / rightOperand).toFixed(12));
+    return Number((leftOperand / rightOperand).toFixed(15));
 }
 
 // operate function
