@@ -23,17 +23,18 @@
 
 // add function
 function add(leftOperand, rightOperand) {
-    return leftOperand + rightOperand;
+    return Number((leftOperand + rightOperand).toFixed(15));
 }
 
 // subtract function
 function subtract(leftOperand, rightOperand) {
-    return leftOperand - rightOperand;
+    return Number((leftOperand - rightOperand).toFixed(15));
+
 }
 
 // multiply function
 function multiply(leftOperand, rightOperand) {
-    return leftOperand * rightOperand;
+    return Number((leftOperand * rightOperand).toFixed(15));
 }
 
 // divide function
