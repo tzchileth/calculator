@@ -95,7 +95,20 @@ buttons.forEach((btn) => {
                         calcObject["rightOperand"]);
                     display.value = contents;
                 }
-            } else {
+            } else if (calcObject["result"] === true) {
+                contents = "";
+                contents += btn.textContent;
+                if (Number(contents) === 0 && contents.length >= 0 &&
+                    !contents.includes(".")) {
+                    contents = "0";
+                    display.value = "0";
+                    calcObject["result"] = false;
+                } else if (Number(contents) !== 0 || contents.includes(".")) {
+                    display.value = contents;
+                    calcObject["result"] = false;
+                }
+            }
+            else if (calcObject["result"] !== true) {
                 contents += btn.textContent;
                 if (Number(contents) === 0 && contents.length >= 0 &&
                     !contents.includes(".")) {
@@ -161,7 +174,8 @@ function performArithmeticOperation(btn) {
             contents += `${btn.textContent}`;
         }
     }
-    else if (btn.textContent == "." && typeof (calcObject["leftOperand"]) === "boolean") {
+    else if (btn.textContent == "." &&
+        typeof (calcObject["leftOperand"]) === "boolean") {
         if (contents.split(" ").at(-1) !== "." &&
             typeof (Number(contents.split(" ").at(-1))) === "number" &&
             !contents.split(" ").at(-1).includes(".")) {
@@ -191,8 +205,8 @@ function displayResult(btn) {
             calcObject["rightOperand"] = false;
             calcObject["operator"] = false;
             display.value = calcObject["result"];
-            calcObject["result"] = false;
-            contents = display.value;
+            calcObject["result"] = true;
+            contents = "";
         }
     }
 }
