@@ -20,10 +20,14 @@ html {
     width: 400px;
 }
 
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
 .displayValue {
     box-sizing: border-box;
     display: flex;
-    overflow-wrap: break-word;
     background: rgb(12, 12, 12);
     border: 1px solid rgb(165, 35, 154);
     height: 70px;
@@ -52,6 +56,7 @@ button {
     margin: 8px;
     width: 70px;
 }
+
 
 .clear {
     background: rgb(56, 4, 4);
@@ -88,4 +93,17 @@ button {
 .fifth-row {
     display: flex;
     justify-content: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #E5E7EB;
+    width: 400px;
+    height: 50px;
+    background: #1F2937;
+    display: flex;
+    text-align: center;
 }
