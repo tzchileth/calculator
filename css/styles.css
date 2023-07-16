@@ -57,6 +57,19 @@ button {
     width: 70px;
 }
 
+.seven:hover,
+.eight:hover,
+.nine:hover,
+.four:hover,
+.five:hover,
+.six:hover,
+.one:hover,
+.two:hover,
+.three:hover,
+.zero:hover,
+.period:hover {
+    background: rgb(4, 9, 61);
+}
 
 .clear {
     background: rgb(56, 4, 4);
@@ -106,4 +119,14 @@ button {
     background: #1F2937;
     display: flex;
     text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a:hover {
+    color: rgb(43, 2, 36);
+    font-weight: bold;
 }
