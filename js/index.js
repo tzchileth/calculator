@@ -122,8 +122,7 @@ buttons.forEach((btn) => {
 function performArithmeticOperation(btn) {
     if ((calcObject["leftOperand"] === false ||
         contents.split(" ").at(-1).includes(".")) &&
-        !calcObject["operator"]) {
-
+        !calcObject["operator"] && contents !== "") {
         if (!isNaN(Number(contents))) {
             calcObject["leftOperand"] = Number(contents);
         }
