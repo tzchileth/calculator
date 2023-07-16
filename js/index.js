@@ -187,7 +187,11 @@ function displayResult(btn) {
             typeof (calcObject["rightOperand"]) == "number" &&
             calcObject["result"] !== "" &&
             calcObject["result"] !== false) {
+            calcObject["leftOperand"] = false;
+            calcObject["rightOperand"] = false;
+            calcObject["operator"] = false;
             display.value = calcObject["result"];
+            calcObject["result"] = false;
             contents = display.value;
         }
     }
