@@ -2,34 +2,27 @@
 
 // add function
 function add(leftOperand, rightOperand) {
-    return Number((leftOperand + rightOperand).toFixed(15));
+    let result = Number(leftOperand) + Number(rightOperand);
+    return Number(result.toFixed(15));
 }
 
 // subtract function
 function subtract(leftOperand, rightOperand) {
-    return Number((leftOperand - rightOperand).toFixed(15));
-
+    let result = Number(leftOperand) - Number(rightOperand);
+    return Number(result.toFixed(15));
 }
 
 // multiply function
 function multiply(leftOperand, rightOperand) {
-    return Number((leftOperand * rightOperand).toFixed(15));
+    let result = Number(leftOperand) * Number(rightOperand);
+    return Number(result.toFixed(15));
 }
 
 // divide function
 function divide(leftOperand, rightOperand) {
-    // check that rightOperand != 0
-    if (rightOperand === 0) {
-        rightOperand =
-            parseFloat(prompt("Enter a denominator not equal to 0: "));
-        while (typeof (rightOperand) !== 'number' ||
-            isNaN(rightOperand) ||
-            rightOperand === 0) {
-            rightOperand =
-                parseFloat(prompt("Enter a denominator not equal to 0: "));
-        }
+    if (Number(rightOperand) !== 0) {
+        return Number((leftOperand / rightOperand).toFixed(15))
     }
-    return Number((leftOperand / rightOperand).toFixed(15));
 }
 
 // operate function
@@ -67,119 +60,112 @@ let calcObject = {
 
 buttons.forEach((btn) => {
     // get numeric buttons
-    if (!isNaN(btn.textContent)) {
+    if (!isNaN(btn.textContent) || btn.textContent === "-" || btn.textContent === ".") {
         btn.addEventListener("click", () => {
-            if (calcObject["operator"] &&
-                typeof (calcObject["leftOperand"]) === "number") {
-                contents += btn.textContent;
-                calcObject["rightOperand"] = Number(contents.split(" ").at(-1));
-                let tempArray = contents.split(" ");
-                tempArray[2] = contents.split(" ")[2];
+            // get leftOperand
+            if (calcObject["leftOperand"] === false || calcObject["operator"] === false) {
+                // check that contents does not have a decimal point already
+                if (!contents.includes("-") && btn.textContent === "-" && contents === "") {
+                    contents += btn.textContent;
+                    display.value = contents;
+                    console.log(contents);
+                }
+                else if (!isNaN(contents) && btn.textContent !== "-" && !contents.includes(".")) {
+                    contents += btn.textContent;
+                    display.value = contents;
+                    console.log(contents);
 
-                if (Number(tempArray[2]) === 0 && tempArray[2].length >= 0 && !tempArray[2].includes(".")) {
-                    tempArray[2] = "0";
-                    contents = tempArray.join(" ");
-                    display.value = contents;
-                } else if (Number(tempArray[2]) !== 0 || tempArray[2].includes(".")) {
-                    contents = tempArray.join(" ");
-                    display.value = contents;
                 }
-
-                // check for division by zero
-                if (calcObject["operator"] === "/" &&
-                    calcObject["rightOperand"] === 0) {
-                    calcObject["rightOperand"] = true;
-                } else {
-                    calcObject["result"] = operate(calcObject["leftOperand"],
-                        calcObject["operator"],
-                        calcObject["rightOperand"]);
+                else if (btn.textContent !== "-" && btn.textContent !== ".") {
+                    contents += btn.textContent;
                     display.value = contents;
+                    console.log(contents);
                 }
-            } else if (calcObject["result"] === true) {
-                contents = "";
-                contents += btn.textContent;
-                if (Number(contents) === 0 && contents.length >= 0 &&
-                    !contents.includes(".")) {
-                    contents = "0";
-                    display.value = "0";
-                    calcObject["result"] = false;
-                } else if (Number(contents) !== 0 || contents.includes(".")) {
-                    display.value = contents;
-                    calcObject["result"] = false;
-                }
+                calcObject["leftOperand"] = contents;
+                console.log("Yayy");
             }
-            else if (calcObject["result"] !== true) {
-                contents += btn.textContent;
-                if (Number(contents) === 0 && contents.length >= 0 &&
-                    !contents.includes(".")) {
-                    contents = "0";
-                    display.value = "0";
-                } else if (Number(contents) !== 0 || contents.includes(".")) {
+
+            // get rightOperand
+            if (calcObject["rightOperand"] === true || typeof (calcObject["operator"]) !== "boolean") {
+                console.log("Yippee");
+                // check that contents does not have a decimal point already
+                if (!contents.split(" ").at(-1).includes("-") && btn.textContent === "-" && contents.split(" ").at(-1) === "") {
+                    contents += btn.textContent;
                     display.value = contents;
+                    console.log(contents);
+                }
+                else if (!isNaN(contents.split(" ").at(-1)) && btn.textContent !== "-" && !contents.split(" ").at(-1).includes(".")) {
+                    contents += btn.textContent;
+                    display.value = contents;
+                    console.log(contents);
+
+                }
+                else if (btn.textContent !== "-" && btn.textContent !== ".") {
+                    contents += btn.textContent;
+                    display.value = contents;
+                    console.log(contents);
+                }
+                calcObject["rightOperand"] = contents.split(" ").at(-1);
+                if (!isNaN(calcObject["rightOperand"])) {
+                    if (calcObject["operator"] === "/" && calcObject["rightOperand"] === "0") {
+                        //pass: force result to be leftOperand value
+                        calcObject["result"] = Number(calcObject["leftOperand"]);
+                    } else {
+                        let result = operate(calcObject["leftOperand"], calcObject["operator"], calcObject["rightOperand"]);
+                        calcObject["result"] = result;
+                    }
                 }
             }
         });
     }
+
     if (isNaN(btn.textContent)) {
         // operator buttons
         btn.addEventListener("click", () => {
             /** operations " * - + / "  */
             performArithmeticOperation(btn);
-            clearOutput(btn);
             display.value = contents;
             displayResult(btn);
         });
     }
+
+    // clear screen
+    if (btn.textContent === "Clear") {
+        btn.addEventListener("click", () => {
+            clearOutput(btn);
+            display.value = contents;
+        })
+    }
 });
 
 function performArithmeticOperation(btn) {
-    if ((calcObject["leftOperand"] === false ||
-        contents.split(" ").at(-1).includes(".")) &&
-        !calcObject["operator"] && contents !== "") {
-        if (!isNaN(Number(contents))) {
-            calcObject["leftOperand"] = Number(contents);
-        }
-    }
-
     if (btn.textContent == "x" ||
         btn.textContent == "+" ||
-        btn.textContent == "-" ||
-        btn.textContent == "/"
+        btn.textContent == "/" ||
+        btn.textContent == "-"
     ) {
-        if (typeof (calcObject["leftOperand"]) === "number") {
+        if (calcObject["leftOperand"].length > 0 && typeof (calcObject["operator"]) !== "string" && contents !== "." && contents !== "-") {
+            console.log(calcObject["leftOperand"]);
             if (!calcObject["rightOperand"] &&
                 !calcObject["operator"]) {
-                contents = Number(contents);
+                contents = `${calcObject["leftOperand"]}`;
                 contents += ` ${btn.textContent} `;
                 calcObject["operator"] = btn.textContent;
-                calcObject["rightOperand"] = true;
+                calcObject["rightOperand"] = true
             }
-            else if (typeof (calcObject["rightOperand"]) === "number") {
+            else if (typeof (calcObject["rightOperand"]) !== "boolean") {
                 calcObject["leftOperand"] = calcObject["result"];
                 contents = calcObject["result"];
                 contents += ` ${btn.textContent} `;
                 calcObject["operator"] = btn.textContent;
-                calcObject["rightOperand"] = true;
                 calcObject["result"] = false;
             }
-        }
-    }
-    else if (btn.textContent == "."
-        && (calcObject["rightOperand"] ||
-            typeof (calcObject["leftOperand"]) === "number")) {
-
-        if (contents.split(" ").at(-1) !== "." &&
-            typeof (Number(contents.split(" ").at(-1))) === "number" &&
-            !contents.split(" ").at(-1).includes(".")) {
-            contents += `${btn.textContent}`;
-        }
-    }
-    else if (btn.textContent == "." &&
-        typeof (calcObject["leftOperand"]) === "boolean") {
-        if (contents.split(" ").at(-1) !== "." &&
-            typeof (Number(contents.split(" ").at(-1))) === "number" &&
-            !contents.split(" ").at(-1).includes(".")) {
-            contents += `${btn.textContent}`;
+        } else if (typeof (calcObject["operator"]) === "string" && typeof (calcObject["result"]) === "number") {
+            calcObject["leftOperand"] = calcObject["result"];
+            contents = calcObject["result"];
+            contents += ` ${btn.textContent} `;
+            calcObject["operator"] = btn.textContent;
+            calcObject["result"] = false
         }
     }
 }
@@ -195,17 +181,16 @@ function clearOutput(btn) {
 }
 
 function displayResult(btn) {
-    if (btn.textContent === "=") {
-        let lastNumber = Number(contents.split(" ").at(-1))
-        if (lastNumber !== btn.textContent &&
-            typeof (calcObject["rightOperand"]) == "number" &&
-            calcObject["result"] !== "" &&
-            calcObject["result"] !== false) {
-            calcObject["leftOperand"] = false;
-            calcObject["rightOperand"] = false;
-            calcObject["operator"] = false;
+    if (btn.textContent === "=" && typeofcalcObject["result"] === "number") {
+        calcObject["leftOperand"] = false;
+        calcObject["rightOperand"] = false;
+        calcObject["operator"] = false;
+        if (typeof (calcObject["result"]) === "undefined") {
+            display.value = "Invalid operation: division by zero";
+            contents = "";
+        } else {
             display.value = calcObject["result"];
-            calcObject["result"] = true;
+            calcObject["result"] = false;
             contents = "";
         }
     }
