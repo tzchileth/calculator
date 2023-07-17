@@ -181,7 +181,7 @@ function clearOutput(btn) {
 }
 
 function displayResult(btn) {
-    if (btn.textContent === "=" && typeofcalcObject["result"] === "number") {
+    if (btn.textContent === "=" && typeof (calcObject["result"] === "number")) {
         calcObject["leftOperand"] = false;
         calcObject["rightOperand"] = false;
         calcObject["operator"] = false;
