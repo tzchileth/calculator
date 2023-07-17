@@ -57,6 +57,7 @@ let calcObject = {
     result: false,
     operator: false,
 }
+let divByZero = "";
 
 buttons.forEach((btn) => {
     // get numeric buttons
@@ -68,47 +69,41 @@ buttons.forEach((btn) => {
                 if (!contents.includes("-") && btn.textContent === "-" && contents === "") {
                     contents += btn.textContent;
                     display.value = contents;
-                    console.log(contents);
                 }
                 else if (!isNaN(contents) && btn.textContent !== "-" && !contents.includes(".")) {
                     contents += btn.textContent;
                     display.value = contents;
-                    console.log(contents);
 
                 }
                 else if (btn.textContent !== "-" && btn.textContent !== ".") {
                     contents += btn.textContent;
                     display.value = contents;
-                    console.log(contents);
                 }
                 calcObject["leftOperand"] = contents;
-                console.log("Yayy");
             }
 
             // get rightOperand
             if (calcObject["rightOperand"] === true || typeof (calcObject["operator"]) !== "boolean") {
-                console.log("Yippee");
                 // check that contents does not have a decimal point already
                 if (!contents.split(" ").at(-1).includes("-") && btn.textContent === "-" && contents.split(" ").at(-1) === "") {
                     contents += btn.textContent;
                     display.value = contents;
-                    console.log(contents);
                 }
                 else if (!isNaN(contents.split(" ").at(-1)) && btn.textContent !== "-" && !contents.split(" ").at(-1).includes(".")) {
                     contents += btn.textContent;
                     display.value = contents;
-                    console.log(contents);
 
                 }
                 else if (btn.textContent !== "-" && btn.textContent !== ".") {
                     contents += btn.textContent;
                     display.value = contents;
-                    console.log(contents);
                 }
                 calcObject["rightOperand"] = contents.split(" ").at(-1);
                 if (!isNaN(calcObject["rightOperand"])) {
                     if (calcObject["operator"] === "/" && calcObject["rightOperand"] === "0") {
                         //pass: force result to be leftOperand value
+                        divByZero = operate(calcObject["leftOperand"], calcObject["operator"], calcObject["rightOperand"]);
+                        console.log(divByZero);
                         calcObject["result"] = Number(calcObject["leftOperand"]);
                     } else {
                         let result = operate(calcObject["leftOperand"], calcObject["operator"], calcObject["rightOperand"]);
@@ -181,12 +176,12 @@ function clearOutput(btn) {
 }
 
 function displayResult(btn) {
-    if (btn.textContent === "=" && typeof (calcObject["result"] === "number")) {
+    if (btn.textContent === "=" && typeof (calcObject["result"] === "number") && typeof (calcObject["rightOperand"]) !== "boolean") {
         calcObject["leftOperand"] = false;
         calcObject["rightOperand"] = false;
         calcObject["operator"] = false;
-        if (typeof (calcObject["result"]) === "undefined") {
-            display.value = "Invalid operation: division by zero";
+        if (typeof (divByZero) === "undefined") {
+            display.value = "Invalid operation";
             contents = "";
         } else {
             display.value = calcObject["result"];
