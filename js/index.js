@@ -183,6 +183,7 @@ function displayResult(btn) {
         if (typeof (divByZero) === "undefined") {
             display.value = "Invalid operation";
             contents = "";
+            divByZero = "";
         } else {
             display.value = calcObject["result"];
             calcObject["result"] = false;
